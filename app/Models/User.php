@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+use App\Enums\UserRoles;
 
 class User extends Authenticatable
 {
@@ -52,5 +54,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'role' => UserRoles::class,
     ];
+
+    /**
+     * Verify if client has one of the expected roles to a route. An admin always has access
+     * @return bool
+     */
+    public function hasAnyRole(array $paRoles): bool
+    {
+        return $this->getAttribute('role')->value === UserRoles::Admin || in_array($this->getAttribute('role')->value, $paRoles);
+    }
+
+    public function manyAnswers(): HasMany {
+        return $this->hasMany(Answer::class, 'game_id');
+    }
 }
