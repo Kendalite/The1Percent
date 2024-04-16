@@ -14,6 +14,24 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                dark: '#1E1F22',
+                bronze: '#CD7F32',
+                silver: '#C0C0C0',
+                gold: '#EDA711',
+                emerald: '#50C878',
+                blood: '#880808',
+                ocean: '#010A2B',
+            },
+        },
+        screens: {
+            'xs': '0px',
+            'sm': '576px',
+            'md': '768px',
+            'lg': '992px',
+            'xl': '1200px',
+            '2xl': '1400px',
+            '3xl': '1920px',
         },
     },
 

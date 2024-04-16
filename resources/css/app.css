@@ -1,3 +1,147 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ========
+ * CSS Background Rings
+ */
+
+/* Gold */
+.bg-rings-gold path {
+    fill: transparent;
+    stroke: #EDA711;
+    stroke-width: 20px;
+}
+
+.bg-rings-gold path#innerDot {
+    fill: #EDA711;
+}
+
+.bg-rings-gold path#outsideRing {
+    fill: #1E1F22;
+}
+
+/* Emerald */
+.bg-rings-emerald path {
+    fill: transparent;
+    stroke: #50C878;
+    stroke-width: 20px;
+}
+
+.bg-rings-emerald path#innerDot {
+    fill: #50C878;
+}
+
+.bg-rings-emerald path#outsideRing {
+    fill: #1E1F22;
+}
+
+/* Blood */
+.bg-rings-blood path {
+    fill: transparent;
+    stroke: #880808;
+    stroke-width: 20px;
+}
+
+.bg-rings-blood path#innerDot {
+    fill: #880808;
+}
+
+.bg-rings-blood path#outsideRing {
+    fill: #1E1F22;
+}
+
+.bg-pulsing {
+    animation: hueRotate 3s infinite;
+    /* 5s duration, infinite loop */
+}
+
+/* Animation */
+@keyframes hueRotate {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    50% {
+        filter: hue-rotate(-10deg);
+    }
+
+    100% {
+        filter: hue-rotate(0deg);
+    }
+}
+
+.player-audio-container {
+    position: relative;
+    margin: 100px 2.5% auto 2.5%;
+    width: 95%;
+    max-width: 500px;
+    height: 132px;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    --seek-before-width: 0%;
+    --volume-before-width: 100%;
+    --buffered-width: 0%;
+    letter-spacing: -0.5px;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        left: -2px;
+        top: -2px;
+        background: linear-gradient(to left, #007db5, #ff8a00);
+        z-index: -1;
+    }
+
+    button {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+        width: 40px;
+        height: 40px;
+        float: left;
+    }
+
+    p {
+        position: absolute;
+        top: -18px;
+        right: 5%;
+        padding: 0 5px;
+        margin: 0;
+        font-size: 28px;
+        background: #fff;
+    }
+
+    .player-audio-start {
+        margin: 20px 2.5% 20px 2.5%;
+    }
+
+    .time {
+        display: inline-block;
+        width: 37px;
+        text-align: center;
+        font-size: 20px;
+        margin: 28.5px 0 18.5px 0;
+        float: left;
+    }
+    output {
+        display: inline-block;
+        width: 32px;
+        text-align: center;
+        font-size: 20px;
+        margin: 10px 2.5% 0 5%;
+        float: left;
+        clear: left;
+    }
+    #mute-icon {
+        margin: 0 2.5%;
+    }
+
+    path {
+        stroke: #007db5;
+    }
+}

@@ -8,6 +8,27 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
     /**
+    * Display a listing of active games allowed
+    *
+    * @return Response
+    */
+    public function hub()
+    {
+
+    }
+
+
+    /**
+    * Load the game screen with data linked to the code
+    * @param string $asRoomCode Code of the game
+    * @return Response
+    */
+    public function play(string $asRoomCode)
+    {
+
+    }
+
+    /**
     * Display a listing of the resource.
     *
     * @return Response

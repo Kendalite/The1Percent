@@ -15,7 +15,10 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "alpinejs": "^3.13.8",
+        "jquery": "^3.7.1",
         "laravel-echo": "^1.15.3",
+        "lottie-web": "^5.12.2",
         "pusher-js": "^8.4.0-rc2"
     }
 }
