@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('project_questions', function (Blueprint $table) {
-            $table->json('question_data')->after('id');
+            $table->integer('question_level')->after('id')->default(-1);
+            $table->text('question_title')->after('question_level');
+            $table->json('question_visuals')->after('question_title')->nullable();
+            $table->text('question_answer')->after('question_visuals');
+            $table->text('question_explanation', 8)->after('question_answer')->nullable();
+            $table->integer('question_state')->after('question_explanation')->default(0);
         });
     }
 

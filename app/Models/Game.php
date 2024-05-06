@@ -11,8 +11,11 @@ class Game extends Model
     protected $table = 'project_games';
 
     protected $fillable = [
-        'label',
-        'author',
+        '_game_author',
+        'game_label',
+        'game_code',
+        'game_mode',
+        'game_state'
     ];
 
     public function manyAnswers(): HasMany {

@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('project_games', function (Blueprint $table) {
-            $table->text('label')->after('id');
-            $table->string('code', 8)->after('label')->default('0XXXX0');
-            $table->string('author', 255)->after('code')->nullable();
+            $table->string('_game_author', 128)->after('id')->nullable();
+            $table->string('game_label', 128)->after('_game_author');
+            $table->string('game_code', 8)->after('game_label')->unique()->default('0XXXXXX0');
+            $table->integer('game_mode')->after('game_code')->default(0);
+            $table->integer('game_state')->after('game_mode')->default(0);
         });
     }
 

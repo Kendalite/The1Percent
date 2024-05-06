@@ -11,7 +11,11 @@ class Question extends Model
     protected $table = 'project_questions';
 
     protected $fillable = [
-        'question_data',
+        'question_level',
+        'question_title',
+        'question_visuals',
+        'question_explanation',
+        'question_state',
     ];
 
     public function linkedGameBuilder(): BelongsTo
