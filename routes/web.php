@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\GameBuilderController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\JukeboxController;
 use App\Http\Controllers\QuestionController;
 
 /*
@@ -62,6 +63,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->name('admin.')->prefix('/
         'question' => QuestionController::class,
         'game' => GameController::class,
         'gamebuilder' => GameBuilderController::class,
+        'jukebox' => JukeboxController::class,
     ]);
 
 });

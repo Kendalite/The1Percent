@@ -11,6 +11,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return 'WAITING...';
+        // Load View
+        return view('dashboard-admin');
     }
 }

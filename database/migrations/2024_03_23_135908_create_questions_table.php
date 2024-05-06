@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('project_questions', function (Blueprint $table) {
+            $table->foreignId('user_id')->after('id')->index()->constrained('users')->restrictOnDelete();
             $table->integer('question_level')->after('id')->default(-1);
             $table->text('question_title')->after('question_level');
             $table->json('question_visuals')->after('question_title')->nullable();

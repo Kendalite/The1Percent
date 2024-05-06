@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('project_jukebox', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->index()->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->index()->constrained('users')->restrictOnDelete();
             $table->string('music_title', 255)->nullable();
             $table->text('music_link')->nullable();
             $table->text('music_thumbnail')->nullable();

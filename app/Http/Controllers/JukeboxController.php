@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
+use App\Models\Jukebox;
 use Illuminate\Http\Request;
 
-class QuestionController extends Controller
+class JukeboxController extends Controller
 {
     /**
     * Display a listing of the resource.
@@ -15,7 +15,7 @@ class QuestionController extends Controller
     public function index()
     {
         // Get All Items
-        $loItems = Question::orderByDesc('created_at')->paginate(10);
+        $loItems = Jukebox::all();
         // Load View
         return view('question.index', [
             'aoItems' => $loItems
@@ -41,7 +41,7 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Question $question)
+    public function show(Jukebox $jukebox)
     {
         //
     }
@@ -49,7 +49,7 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Question $question)
+    public function edit(Jukebox $jukebox)
     {
         //
     }
@@ -57,7 +57,7 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, Jukebox $jukebox)
     {
         //
     }
@@ -65,7 +65,7 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy(Jukebox $jukebox)
     {
         //
     }

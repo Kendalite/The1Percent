@@ -18,6 +18,11 @@ class Question extends Model
         'question_state',
     ];
 
+    public function linkedUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function linkedGameBuilder(): BelongsTo
     {
         return $this->belongsTo(GameBuilder::class, 'game_id');
