@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\GameBuilder;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -23,9 +24,15 @@ class GameController extends Controller
     * @param string $asRoomCode Code of the game
     * @return Response
     */
-    public function play(string $asRoomCode)
+    public function play(string $asRoomCode = '')
     {
-
+        // Request game item
+        $loGame = Game::getGameByCode($asRoomCode);
+        if ( !empty($loGame) ) {
+            $laGameQuestions = GameBuilder::getGameQuestions($loGame->id);
+            dump($laGameQuestions);
+        }
+        dd($loGame);
     }
 
     /**

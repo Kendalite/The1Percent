@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::table('project_questions', function (Blueprint $table) {
             $table->foreignId('user_id')->after('id')->index()->constrained('users')->restrictOnDelete();
             $table->integer('question_level')->after('id')->default(-1);
-            $table->text('question_title')->after('question_level');
+            $table->string('question_lang', 8)->after('question_level')->default('en');
+            $table->string('question_format', 4)->after('question_lang')->default('open');
+            $table->text('question_title')->after('question_format');
             $table->json('question_visuals')->after('question_title')->nullable();
             $table->text('question_answer')->after('question_visuals');
             $table->text('question_explanation', 8)->after('question_answer')->nullable();
