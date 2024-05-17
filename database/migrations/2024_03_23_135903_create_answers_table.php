@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('game_id')->after('user_id')->index()->constrained('project_games')->onDelete('cascade');
             $table->foreignId('question_id')->after('game_id')->index()->constrained('project_questions')->onDelete('cascade');
             $table->string('answer', 255)->after('question_id')->nullable();
-            $table->unsignedBigInteger('macrotime')->after('answer')->nullable();
+            $table->integer('score')->after('answer')->default(0);
+            $table->unsignedBigInteger('macrotime')->after('score')->nullable();
             $table->unsignedBigInteger('microtime')->after('macrotime')->nullable();
         });
     }

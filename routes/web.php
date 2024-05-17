@@ -20,7 +20,17 @@ use App\Http\Controllers\QuestionController;
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('language/{asLocaleString?}', function ($asLocaleString) {
+    if ( isset($asLocaleString) && in_array($asLocaleString, config('app.available_locales')) ) {
+        app()->setLocale($asLocaleString);
+        session()->put('locale', $asLocaleString);
+    }
+    return redirect()->back();
+});
 
 /*
 |--------------------------------------------------------------------------

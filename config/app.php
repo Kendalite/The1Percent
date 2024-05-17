@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +96,23 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | The application available locales determines all available languages that can be used
+    | by the translation service provider. You are free to set this array
+    | to any of the locales which will be supported by the application.
+    |
+    */
+
+    'available_locales' => [
+        'English' => 'en',
+        'French' => 'fr',
+    ],
 
     /*
     |--------------------------------------------------------------------------

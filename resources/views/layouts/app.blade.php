@@ -17,7 +17,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="antialiased overflow-hidden bg-dark">
+<body class="antialiased overflow-hidden bg-black">
     <!-- Page Content -->
     <main>
         {{ $slot }}

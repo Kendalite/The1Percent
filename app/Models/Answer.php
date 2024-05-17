@@ -11,6 +11,7 @@ class Answer extends Model
 
     protected $fillable = [
         'answer',
+        'score',
         'macrotime',
         'microtime',
     ];
