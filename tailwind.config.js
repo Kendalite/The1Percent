@@ -22,6 +22,7 @@ export default {
                 emerald: '#50C878',
                 blood: '#880808',
                 ocean: '#010A2B',
+                lightOcean: '#2F45B0',
                 taupe: '#A68F53',
             },
         },

@@ -2,9 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========
+/** ========
+ * Game "Clues" system fit
+ */
+
+.system-dynamic-height {
+    max-height: 55%;
+
+    @media (max-height: 600px) {
+        max-height: 35%;
+    }
+    
+    @media (max-height: 450px) {
+        max-height: 25%;
+    }
+}
+
+/** ========
  * CSS Background Rings
  */
+
+/* Ocean */
+.bg-rings-ocean path {
+    fill: transparent;
+    stroke: #0E328F;
+    stroke-width: 20px;
+}
+
+.bg-rings-ocean path#innerDot {
+    fill: #0E328F;
+}
+
+.bg-rings-ocean path#outsideRing {
+    fill: #1E1F22;
+}
 
 /* Gold */
 .bg-rings-gold path {
@@ -71,6 +102,10 @@
     }
 }
 
+/** ========
+ * Music Container
+ */
+
 .player-audio-container {
     position: relative;
     margin: 100px 2.5% auto 2.5%;
@@ -128,6 +163,7 @@
         margin: 28.5px 0 18.5px 0;
         float: left;
     }
+
     output {
         display: inline-block;
         width: 32px;
@@ -137,6 +173,7 @@
         float: left;
         clear: left;
     }
+
     #mute-icon {
         margin: 0 2.5%;
     }

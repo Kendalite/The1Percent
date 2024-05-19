@@ -20,7 +20,7 @@
             </div>
         @endif
         <input type="{{ $type }}" name="{{ $name }}" id="{{ $name }}" {{ $disabled ? 'disabled' : '' }} {{ $readonly ? 'readonly' : '' }} {!! $attributes->class([
-                    'w-full bg-black text-white block border border-2 border-gold placeholder-white/25 px-4 py-2 rounded-2xl leading-6 focus:border-ocean focus:ring focus:ring-ocean focus:ring-opacity-50 appearance-none' .
+                    'w-full bg-black text-white block border border-2 border-gold placeholder-white/25 px-4 py-2 rounded-2xl leading-6 focus:border-lightOcean focus:ring focus:ring-ocean focus:ring-opacity-50 appearance-none' .
                     ($iconInput ? ' pl-10' : ''),
                     (isset($disabled) && $disabled) || (isset($readonly) && $readonly) ? 'bg-gray-200' : '',
                 ])->merge(['type' => 'text']) !!}>

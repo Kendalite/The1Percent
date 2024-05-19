@@ -4,7 +4,7 @@
     @include('layouts.credits-cta')
     <section class="flex flex-col w-full h-screen gap-8 lg:gap-32 items-center justify-around p-8 lg:p-12">
         <h1
-            class="text-4xl lg:text-8xl text-white text-center font-extrabold font-sans bg-black border-bronze border-8 rounded-2xl p-6 max-w-screen-xl mx-auto w-full shadow-lg shadow-black">
+            class="text-4xl lg:text-8xl text-white text-center font-extrabold font-sans bg-black border-bronze border-4 rounded-2xl p-6 max-w-screen-xl mx-auto w-full shadow-lg shadow-black">
             {{ __('t1c.welcome.The1Club') }}
         </h1>
         <section
@@ -24,7 +24,7 @@
                     class="w-full rounded-2xl border-0 p-3 bg-ocean text-white uppercase text-lg font-bold hover:bg-gold hover:text-black transition-all duration-250">
                     {{ __('t1c.register.join') }}
                 </button>
-                </div>
+            </form>
         </section>
     </section>
 </x-app-layout>

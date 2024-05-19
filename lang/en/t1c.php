@@ -20,5 +20,8 @@ return [
     'register.roomcode' => 'Room Code',
     'register.username' => 'Username',
     'register.join' => 'Join',
-
+    
+    // Game Page
+    'game.answer_placeholder' => 'Write your answer here...',
+    'game.confirm' => 'Confirm',
 ];

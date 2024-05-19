@@ -30,9 +30,11 @@ class GameController extends Controller
         $loGame = Game::getGameByCode($asRoomCode);
         if ( !empty($loGame) ) {
             $laGameQuestions = GameBuilder::getGameQuestions($loGame->id);
-            dump($laGameQuestions);
+            // Load View
+            return view('game.play', [
+                'aaQuestions' => $laGameQuestions
+            ]);
         }
-        dd($loGame);
     }
 
     /**
