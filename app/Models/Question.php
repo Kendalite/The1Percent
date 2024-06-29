@@ -19,6 +19,7 @@ class Question extends Model
         'question_format',
         'question_title',
         'question_visuals',
+        'question_answers',
         'question_explanation',
         'question_state',
     ];
@@ -51,13 +52,14 @@ class Question extends Model
     * Retrieve question by identifier
     * @param int $aiId Identifier for the question
     * @param bool $abLiveState If true, retrieves only live questions. If false, retrieve all questions
+    * @param bool $abAdminMode If true, get all infos. If false, retrieve ID only.
     * @return Question
     */
-    public static function getQuestionById($aiId = '', $abLiveState = 1): ?Question
+    public static function getQuestionById($aiId = -1, $abLiveState = 1, $abAdminMode = 0): ?Question
     {
         return Question::where([
             ['id', '=', $aiId],
             ($abLiveState ? ['question_state', '=', States::Ready] : ['question_state', '>=', 0]),
-        ])->first();
+        ])->first()->makeHidden(($abAdminMode > 0) ? [] : ['question_answers', 'question_explanation', 'question_state', 'question_score']);
     }
 }

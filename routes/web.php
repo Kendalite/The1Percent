@@ -42,7 +42,12 @@ Route::controller(GameController::class)->name('arena.')->prefix('play')
     ->group(function () {
         Route::get('/', 'hub')->name('hub');
         Route::get('{asRoomCode}', 'play')->name('arena');
-    });
+});
+
+Route::controller(QuestionController::class)->name('quiz.')->prefix('play')
+    ->group(function () {
+        Route::post('/retrieveQuestion', 'retrieveQuestion')->name('retrieveQuestion');
+});
 
 /*
 |--------------------------------------------------------------------------

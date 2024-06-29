@@ -27,9 +27,10 @@ class GameBuilder extends Model
     * @param int $aiId Identifier of the game
     * @param bool $abOrder If true, questions will be retrieved in order (order must be declared). If false, retrieve all.
     * @param bool $abLiveState If true, only get live questions (null will be in place for non-live). If false, retrieve all.
+    * @param bool $abAdminMode If true, get all infos. If false, retrieve ID only.
     * @return Array
     */
-    public static function getGameQuestions($aiId = 0, $abOrder = 1, $abLiveState = 1): Array
+    public static function getGameQuestions($aiId = 0, $abOrder = 1, $abLiveState = 1, $abAdminMode = 0): Array
     {
         // Retrieve
         $laReturnArray = [];
@@ -40,7 +41,7 @@ class GameBuilder extends Model
         // Upload
         if ( count($loGameBuilder) > 0 ) {
             foreach ( $loGameBuilder as $liCounter => $loLinkage ) {
-                $laReturnArray[$liCounter+1] = Question::getQuestionById($loLinkage->question_id, $abLiveState);
+                $laReturnArray[$liCounter+1] = ($abAdminMode) ? Question::getQuestionById($loLinkage->question_id, $abLiveState) : $loLinkage->question_id;
             }
         }
         return $laReturnArray;

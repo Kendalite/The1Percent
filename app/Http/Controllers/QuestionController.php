@@ -69,4 +69,16 @@ class QuestionController extends Controller
     {
         //
     }
+
+    /**
+     * Load question from storage
+     * @param int $aiId Identifiant de la question
+     * @param bool $abAdminMode If true, get all infos. If false, retrieve playable question
+     */
+    public function retrieveQuestion(Request $request)
+    {
+        // Get Current Item and Format
+        $loQuestion = Question::getQuestionById($request?->aiId);
+        return response()->json($loQuestion);
+    }
 }

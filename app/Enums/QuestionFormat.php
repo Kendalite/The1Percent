@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum QuestionFormat: int
+enum QuestionFormat: string
 {
     case AlphaNumeric = 'open';
     case Numeric = 'nums';
@@ -13,7 +13,7 @@ enum QuestionFormat: int
      * Retrieve static nicename for case
      * @return string
      */
-    public static function getDisplayName(int $value): ?string
+    public static function getDisplayName(string $value): ?string
     {
         return self::tryFrom($value)?->displayName();
     }

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Gamemodes;
+
 use App\Models\Game;
 use App\Models\GameBuilder;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class GameController extends Controller
 {
@@ -30,10 +34,18 @@ class GameController extends Controller
         $loGame = Game::getGameByCode($asRoomCode);
         if ( !empty($loGame) ) {
             $laGameQuestions = GameBuilder::getGameQuestions($loGame->id);
-            // Load View
-            return view('game.play', [
-                'aaQuestions' => $laGameQuestions
-            ]);
+            switch ($loGame->game_mode) {
+                case Gamemodes::Solo:
+                    // Load View
+                    return view('game.play', [
+                        'aaQuestions' => $laGameQuestions
+                    ]);
+                    break;
+                case Gamemodes::Public:
+
+                    break;
+                default:
+            }
         }
     }
 
