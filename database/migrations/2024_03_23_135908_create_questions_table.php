@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('question_format', 4)->after('question_lang')->default('open');
             $table->text('question_title')->after('question_format');
             $table->json('question_visuals')->after('question_title')->nullable();
-            $table->text('question_answer')->after('question_visuals');
-            $table->text('question_explanation', 8)->after('question_answer')->nullable();
+            $table->json('question_answers')->after('question_visuals');
+            $table->integer('question_score')->after('question_answers')->default(1);
+            $table->text('question_explanation')->after('question_score')->nullable();
             $table->integer('question_state')->after('question_explanation')->default(0);
         });
     }

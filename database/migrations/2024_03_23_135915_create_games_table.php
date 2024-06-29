@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('game_label', 128)->after('_game_author');
             $table->string('game_code', 8)->after('game_label')->unique()->default('0XXXXXX0');
             $table->integer('game_mode')->after('game_code')->default(0);
-            $table->integer('game_state')->after('game_mode')->default(0);
+            $table->integer('game_timer')->after('game_mode')->default(30);
+            $table->integer('game_state')->after('game_timer')->default(0);
         });
     }
 

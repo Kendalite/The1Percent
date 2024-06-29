@@ -10,8 +10,8 @@ class Answer extends Model
     protected $table = 'project_answers';
 
     protected $fillable = [
-        'answer',
-        'score',
+        'answer_response',
+        'answer_score',
         'macrotime',
         'microtime',
     ];

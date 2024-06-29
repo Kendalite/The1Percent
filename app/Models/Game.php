@@ -18,6 +18,7 @@ class Game extends Model
         'game_label',
         'game_code',
         'game_mode',
+        'game_timer',
         'game_state'
     ];
 
