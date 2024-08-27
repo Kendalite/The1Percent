@@ -15,18 +15,28 @@ jQuery(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    const poQuizData = JSON.parse(sessionStorage.getItem("paQuiz"));
+    const coGameTimerObject = document.querySelector(".customTimerRadial");
 
-    let retrieveDataLink = $('#startShow').data("target");
-    let poQuizData = JSON.parse(sessionStorage.getItem("paQuiz"));
+    // Form Prevent Default Logic
+    var loAnswerBox = document.getElementById('answerBox');
+    if (loAnswerBox.attachEvent) {
+        loAnswerBox.attachEvent("submit", preventSubmit);
+    } else {
+        loAnswerBox.addEventListener("submit", preventSubmit);
+    }
 
-    /** 
-     * Init Interval Timer
+    /**
+     * Init Game Rules & Timer
      */
-    const gameTimer = {
-        loObject: document.querySelector(".customTimerRadial"), // Object HTML
+    const coGameMaster = {
+        // Game Rules
+        liLives: 1,
+        lbSoloGame: false,              // Boolean solo game (syncs time / sound locally)
+        lbQuestionActive: false,        // Boolean question active
+        // Game Timer Settings
         lbTimerActive: false,           // Boolean clock active
         lbSoundActive: false,           // Boolean sound active
-        lbSoloGame: false,              // Boolean solo game (syncs time / sound locally)
         liTimeRemaining: ciGameTimer,   // Integer seconds in timer
         liRadiant: 360                  // Integer Radiant Object HTML
     };
@@ -46,70 +56,83 @@ jQuery(function () {
             var loTimerInterval = setInterval(() => {
                 liInfiniteCounter++;
                 if (liClockCycleStart < liInfiniteCounter) {
-                    startTimer(gameTimer);
+                    startTimer();
                     liClockCycleStart = 999999999999;
                 }
-                if (gameTimer.lbTimerActive) {
-                    if (gameTimer.lbSoundActive) {
+                if (coGameMaster.lbTimerActive) {
+                    if (coGameMaster.lbSoundActive) {
                         startSound('t1p-30');
-                        gameTimer.lbSoundActive = false;
+                        coGameMaster.lbSoundActive = false;
                     }
-                    gradientClock(gameTimer);
+                    gradientClock();
                 }
             }, 1000);
     }
 
     /**
-    * Start show and display first question
-    */
-    $('#startShow').on('click', function () {
-        newQuestion();
-        $('#startShow').remove();
-    });
-
-    /**
     * Display next question
     */
     $('#nextQuestion').on('click', function () {
-        resetTimer(gameTimer);
+        resetTimer();
         newQuestion();
     });
 
     /**
-     * Utilitaires
+     * Utilitaires - Design
      */
 
     /**
      * Design - Change gradiance on clock
-     * @param {*} gameTimer 
      */
-    function gradientClock(gameTimer) {
-        if (gameTimer.liTimeRemaining >= 0) {
-            gameTimer.loObject.style.setProperty("--coGradientValue", gameTimer.liRadiant + "deg")
-            const coGradientValue = gameTimer.loObject.style.getPropertyValue("--coGradientValue");
-            gameTimer.loObject.style.background = ` conic-gradient(#eda711 var(--coGradientValue) ,#eda711 0deg ,white 0deg,white 360deg)`
-            gameTimer.liRadiant = gameTimer.liRadiant - (gameTimer.liRadiant / gameTimer.liTimeRemaining);
-            gameTimer.liTimeRemaining--;
+    function gradientClock() {
+        if (coGameMaster.liTimeRemaining >= 0) {
+            coGameTimerObject.style.setProperty("--coGradientValue", coGameMaster.liRadiant + "deg")
+            const coGradientValue = coGameTimerObject.style.getPropertyValue("--coGradientValue");
+            coGameTimerObject.style.background = ` conic-gradient(#eda711 var(--coGradientValue) ,#eda711 0deg ,white 0deg,white 360deg)`
+            coGameMaster.liRadiant = coGameMaster.liRadiant - (coGameMaster.liRadiant / coGameMaster.liTimeRemaining);
+            coGameMaster.liTimeRemaining--;
         }
         else {
-            gameTimer.liRadiant = 360;
-            gameTimer.liTimeRemaining = ciGameTimer;
-            gameTimer.lbTimerActive = false;
+            coGameMaster.liRadiant = 360;
+            coGameMaster.liTimeRemaining = ciGameTimer;
+            coGameMaster.lbTimerActive = false;
+            coGameMaster.lbQuestionActive = false;
         }
     }
+
+    /**
+     * Design - Change background rings color
+     * @param {string} asClassValue 
+     */
+    function backgroundRings(asClassValue) {
+        $('#bg-rings-upper').removeClass(['bg-rings-ocean', 'bg-rings-gold', 'bg-rings-emerald', 'bg-rings-blood']);
+        $('#bg-rings-upper').addClass('bg-rings-' + asClassValue);
+        $('#bg-rings-lower').removeClass(['bg-rings-ocean', 'bg-rings-gold', 'bg-rings-emerald', 'bg-rings-blood']);
+        $('#bg-rings-lower').addClass('bg-rings-' + asClassValue);
+    }
+
+    /**
+     * Utilitaires - Quiz
+     */
 
     /**
      * Quiz - Initialize new question
      */
     function newQuestion() {
+        // Question becomes live
+        coGameMaster.lbQuestionActive = true;
+        // Unlock Input
+        $("#player_answer").prop('readonly', false);
+        // Retrieve question
         sessionStorage.setItem('piQuestionsPlayed', parseInt(sessionStorage.getItem("piQuestionsPlayed")) + 1);
         $.ajax({
-            url: retrieveDataLink,
+            url: $('#answerBox').data("retrievedata"),
             method: 'POST',
             data: {
                 aiId: poQuizData[sessionStorage.getItem("piQuestionsPlayed")],
             },
             success: function (aoData) {
+                backgroundRings('gold');
                 displayQuestion(aoData);
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -130,7 +153,6 @@ jQuery(function () {
         // Add delay before start of timer to give time to load image properly
         liClockCycleStart = liInfiniteCounter + ciDelayStart;
     }
-
     /**
      * Quiz - Update question title
      * @param {*} asTitle 
@@ -152,27 +174,94 @@ jQuery(function () {
     function updateComplement(aaComplements) {
         // TODO
     }
+
+    /**
+     * Quiz - Display the result of an user input to a questions
+     * @param {*} poData 
+     */
+    function displayAnswer(poData) {
+        resetTimer();
+        if ( poData ) {
+            backgroundRings('emerald');
+        }
+        else {
+            backgroundRings('blood');
+        }
+    }
+
     /**
      * Quiz - Start Timer and Sound effects
-     * @param {*} gameTimer 
      */
-    function startTimer(gameTimer) {
-        gameTimer.lbTimerActive = true;
-        gameTimer.lbSoundActive = true;
+    function startTimer() {
+        coGameMaster.lbTimerActive = true;
+        coGameMaster.lbSoundActive = true;
     }
     /**
      * Quiz - Reset Timer and Sound effects
-     * @param {*} gameTimer 
      */
-    function resetTimer(gameTimer) {
+    function resetTimer() {
         resetSound('t1p-30');
-        gameTimer.lbTimerActive = false;
-        gameTimer.lbSoundActive = false;
-        gameTimer.liRadiant = 360;
-        gameTimer.liTimeRemaining = ciGameTimer;
-        gameTimer.loObject.style.setProperty("--coGradientValue", 0 + "deg")
-        gameTimer.loObject.style.background = ` conic-gradient(#eda711 0deg ,#eda711 0deg ,white 0deg,white 360deg)`;
+        coGameMaster.lbQuestionActive = false;
+        coGameMaster.lbTimerActive = false;
+        coGameMaster.lbSoundActive = false;
+        coGameMaster.liRadiant = 360;
+        coGameMaster.liTimeRemaining = ciGameTimer;
+
+        coGameTimerObject.style.setProperty("--coGradientValue", 0 + "deg")
+        coGameTimerObject.style.background = ` conic-gradient(#eda711 0deg ,#eda711 0deg ,white 0deg,white 360deg)`;
+
+        backgroundRings('ocean');
     }
+
+    /**
+     * Quiz - Check for answer
+     */
+    function preventSubmit(e) {
+        // IE8- Prevention
+        if (e.preventDefault) e.preventDefault();
+        // Game Logic
+        checkAnswer();
+        resetTimer();
+        // IE8+ Prevention
+        return false;
+    }
+
+    /**
+     * Quiz - Check for answer
+     */
+    function checkAnswer() {
+        let loFormData = new FormData(document.forms.answerBox);
+        // Game Logic
+        if (coGameMaster.lbQuestionActive) {
+            // Lock Input
+            $("#player_answer").prop('readonly', true);
+            // Send Value
+            $.ajax({
+                url: $('#answerBox').data("checkdata"),
+                method: 'POST',
+                data: {
+                    aiId: poQuizData[sessionStorage.getItem("piQuestionsPlayed")],
+                    asAnswer: loFormData.get('player_answer'),
+                },
+                success: function (aoData) {
+                    displayAnswer(aoData);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('AJAX error: ' + textStatus);
+                }
+            });
+            // Empty input value after sending
+            $("#player_answer").val('');
+        }
+        else {
+
+        }
+    }
+
+    /**
+     * Utilitaires - Soundboard
+     */
+
     /**
      * Soundboard - Start playing
      */

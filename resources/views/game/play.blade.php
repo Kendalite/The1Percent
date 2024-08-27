@@ -30,23 +30,20 @@
             class="w-full h-full system-dynamic-height flex-initial inline-flex max-w-screen-2xl bg-black border-taupe border-4 rounded-xl items-center justify-center">
             <img src="https://placehold.co/10x10" alt="Question" class="w-full h-fit max-h-full object-contain p-2 lg:p-8" /> 
         </section>
-        <form method="POST" action="#TODO" class="flex flex-row w-full h-full max-h-[60px] max-w-screen-2xl gap-4 lg:gap-8 items-center justify-between">
-            <x-rounded-input name="player_answer" label="" placeholder="{{ __('t1c.game.answer_placeholder') }}" />
+        <form method="POST" id="answerBox" action="{{ route('quiz.checkAnswer') }}" data-retrieveData="{{ route('quiz.retrieveQuestion') }}" data-checkData="{{ route('quiz.checkAnswer') }}"
+        class="flex flex-row w-full h-full max-h-[60px] max-w-screen-2xl gap-4 lg:gap-8 items-center justify-between">
+            <x-rounded-input name="player_answer" label="" placeholder="{{ __('t1c.game.answer_placeholder') }}" readonly="true" />
             <button type="submit"
                 class="w-1/3 md:w-1/4 rounded-2xl border-2 border-emerald px-2 bg-black text-white text-lg font-bold hover:bg-emerald hover:text-black transition-all duration-250">
                 {{ __('t1c.game.confirm') }}
             </button>
         </form>
         <section id="controlsShows" class="flex flex-row align-center justify-center gap-4 w-full max-w-screen-2xl">
-            <button id="startShow" data-target="{{ route('quiz.retrieveQuestion') }}"
-            class="rounded-2xl border-2 border-indigo-900 px-8 bg-black text-white text-lg font-bold hover:border-indigo-500 hover:text-gold transition-all duration-250">
-            START
-            </button>
-            <button id="nextQuestion" data-target="{{ route('quiz.retrieveQuestion') }}"
+            <button id="nextQuestion"
             class="rounded-2xl border-2 border-indigo-900 px-8 bg-black text-white text-lg font-bold hover:border-indigo-500 hover:text-gold transition-all duration-250">
             Next Question
             </button>
-            <button id="endShow" data-target="{{ route('quiz.retrieveQuestion') }}"
+            <button id="endShow"
             class="rounded-2xl border-2 border-red-900 px-8 bg-black text-white text-lg font-bold hover:border-red-500 hover:text-gold transition-all duration-250">
             endShow
             </button>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
@@ -72,13 +73,45 @@ class QuestionController extends Controller
 
     /**
      * Load question from storage
-     * @param int $aiId Identifiant de la question
-     * @param bool $abAdminMode If true, get all infos. If false, retrieve playable question
+     * @param object $request Sent request by user (id question)
+     * @return object
      */
     public function retrieveQuestion(Request $request)
     {
+        $loValidator = Validator::make($request->all(), [
+            'aiId' => 'required|string',
+        ]);
+        if ( $loValidator->fails() ) {
+            return false;
+        }
+        $loValidatedData = $loValidator->validated();
         // Get Current Item and Format
-        $loQuestion = Question::getQuestionById($request?->aiId);
+        $loQuestion = Question::getQuestionById($loValidatedData['aiId']);
         return response()->json($loQuestion);
+    }
+
+    /**
+     * Check input by user against question from storage
+     * @param object $request Sent request by user (id question + input)
+     * @return bool
+     */
+    public function checkAnswer(Request $request)
+    {
+        $loValidator = Validator::make($request->all(), [
+            'asAnswer' => 'required|string',
+            'aiId' => 'required|string',
+        ]);
+        if ( $loValidator->fails() ) {
+            return response()->json(false);
+        }
+        $loValidatedData = $loValidator->validated();
+        // Get Current Item and Format
+        $loAnswerString = json_decode(Question::getQuestionById($loValidatedData['aiId'], 0, 1)->question_answers);
+        foreach ( $loAnswerString as $lsAnswerValid ) {
+            if ( strtolower($loValidatedData['asAnswer']) === strtolower($lsAnswerValid) ) {
+                return response()->json(true);
+            }
+        }
+        return response()->json(false);
     }
 }

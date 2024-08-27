@@ -44,9 +44,10 @@ Route::controller(GameController::class)->name('arena.')->prefix('play')
         Route::get('{asRoomCode}', 'play')->name('arena');
 });
 
-Route::controller(QuestionController::class)->name('quiz.')->prefix('play')
+Route::controller(QuestionController::class)->name('quiz.')->prefix('quiz')
     ->group(function () {
         Route::post('/retrieveQuestion', 'retrieveQuestion')->name('retrieveQuestion');
+        Route::post('/checkAnswer', 'checkAnswer')->name('checkAnswer');
 });
 
 /*

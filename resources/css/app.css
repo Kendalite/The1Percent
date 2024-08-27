@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+input:-moz-read-only {
+    border-color: #0E328F;
+}
+
+/* Blink/WebKit/Edge n'ont pas de préfixe */
+input:read-only {
+    border-color: #0E328F;
+}
+
 /** ========
  * Game "Clues" system fit
  */
@@ -12,7 +21,7 @@
     @media (max-height: 600px) {
         max-height: 35%;
     }
-    
+
     @media (max-height: 450px) {
         max-height: 25%;
     }
@@ -21,6 +30,10 @@
 /** ========
  * CSS Background Rings
  */
+
+.bg-rings {
+    transition: all 2s ease-in-out;
+}
 
 /* Ocean */
 .bg-rings-ocean path {
@@ -111,16 +124,18 @@
     inherits: false;
     initial-value: 360deg;
 }
+
 .customTimerRadial {
     --coGradientValue: 0deg;
     position: relative;
     border-radius: 50%;
     transition: --coGradientValue 1s linear;
-    background: conic-gradient(#eda711 var(--coGradientValue) ,#eda711 0deg ,white 0deg,white 360deg);
+    background: conic-gradient(#eda711 var(--coGradientValue), #eda711 0deg, white 0deg, white 360deg);
     animation: 2s linear 1 forward;
     z-index: 25;
 }
-.customTimerRadial::before{
+
+.customTimerRadial::before {
     position: absolute;
     content: "";
     width: 95%;
@@ -131,7 +146,7 @@
     top: 50%;
     color: white;
     z-index: 25;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
 
 /** ========
