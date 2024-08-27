@@ -6,7 +6,9 @@ jQuery(function () {
     /** 
      * Const and Variables for Game
      */
-    const ciGameTimer = 30;
+    const ciGameTimer = 30; // Numbers of seconds in the timer
+    const csGamemode = ''; //  Type of gamemode played by the user at load
+    const ciDelayStart = 5; // Number of seconds before the timer starts
     // Set up CSRF token for all AJAX requests
     $.ajaxSetup({
         headers: {
@@ -20,40 +22,42 @@ jQuery(function () {
     /** 
      * Init Interval Timer
      */
-    var loTimerDiv = document.querySelector(".customTimerRadial");
-    var lbStartTimer = false;
-    var lbStartTimerSound = false;
-    var liTimerRadiant = 360;
-    let liTimerSeconds = ciGameTimer;
-
+    const gameTimer = {
+        loObject: document.querySelector(".customTimerRadial"), // Object HTML
+        lbTimerActive: false,           // Boolean clock active
+        lbSoundActive: false,           // Boolean sound active
+        lbSoloGame: false,              // Boolean solo game (syncs time / sound locally)
+        liTimeRemaining: ciGameTimer,   // Integer seconds in timer
+        liRadiant: 360                  // Integer Radiant Object HTML
+    };
+    // Keeping track of cycles on clock
     let liInfiniteCounter = 0;
     let liClockCycleStart = 999999999999;
 
-    var loTimerInterval = setInterval(() => {
-        liInfiniteCounter++;
-        if (liClockCycleStart < liInfiniteCounter) {
-            startTimer();
-            liClockCycleStart = 999999999999;
-        }
-        if ( lbStartTimer ) {
-            if ( lbStartTimerSound ) {
-                startSound('t1p-30');
-                lbStartTimerSound = false;
-            }
-            if ( liTimerSeconds >= 0 ) {
-                loTimerDiv.style.setProperty("--coGradientValue", liTimerRadiant + "deg")
-                const coGradientValue = loTimerDiv.style.getPropertyValue("--coGradientValue");
-                loTimerDiv.style.background = ` conic-gradient(#eda711 var(--coGradientValue) ,#eda711 0deg ,white 0deg,white 360deg)`
-                liTimerRadiant = liTimerRadiant - (liTimerRadiant / liTimerSeconds);
-                liTimerSeconds--;
-            }
-            else {
-                liTimerRadiant = 360;
-                liTimerSeconds = ciGameTimer;
-                lbStartTimer = false;
-            }
-        }
-    }, 1000)
+    /**
+     * Game Internal Clock
+     */
+    switch (csGamemode) {
+        case 'Live':
+            // Live Clock
+            break;
+        default:
+            // Solo Clock
+            var loTimerInterval = setInterval(() => {
+                liInfiniteCounter++;
+                if (liClockCycleStart < liInfiniteCounter) {
+                    startTimer(gameTimer);
+                    liClockCycleStart = 999999999999;
+                }
+                if (gameTimer.lbTimerActive) {
+                    if (gameTimer.lbSoundActive) {
+                        startSound('t1p-30');
+                        gameTimer.lbSoundActive = false;
+                    }
+                    gradientClock(gameTimer);
+                }
+            }, 1000);
+    }
 
     /**
     * Start show and display first question
@@ -67,13 +71,32 @@ jQuery(function () {
     * Display next question
     */
     $('#nextQuestion').on('click', function () {
-        resetTimer();
+        resetTimer(gameTimer);
         newQuestion();
     });
 
     /**
      * Utilitaires
      */
+
+    /**
+     * Design - Change gradiance on clock
+     * @param {*} gameTimer 
+     */
+    function gradientClock(gameTimer) {
+        if (gameTimer.liTimeRemaining >= 0) {
+            gameTimer.loObject.style.setProperty("--coGradientValue", gameTimer.liRadiant + "deg")
+            const coGradientValue = gameTimer.loObject.style.getPropertyValue("--coGradientValue");
+            gameTimer.loObject.style.background = ` conic-gradient(#eda711 var(--coGradientValue) ,#eda711 0deg ,white 0deg,white 360deg)`
+            gameTimer.liRadiant = gameTimer.liRadiant - (gameTimer.liRadiant / gameTimer.liTimeRemaining);
+            gameTimer.liTimeRemaining--;
+        }
+        else {
+            gameTimer.liRadiant = 360;
+            gameTimer.liTimeRemaining = ciGameTimer;
+            gameTimer.lbTimerActive = false;
+        }
+    }
 
     /**
      * Quiz - Initialize new question
@@ -97,12 +120,15 @@ jQuery(function () {
 
     /**
      * Quiz - Display the new question
+     * @param {*} poData 
      */
     function displayQuestion(poData) {
+        // Display information
         updateTitle(poData.question_title);
         updatePercent(poData.question_level);
         updateComplement(poData.question_visuals);
-        liClockCycleStart = liInfiniteCounter + 5;
+        // Add delay before start of timer to give time to load image properly
+        liClockCycleStart = liInfiniteCounter + ciDelayStart;
     }
 
     /**
@@ -128,22 +154,24 @@ jQuery(function () {
     }
     /**
      * Quiz - Start Timer and Sound effects
+     * @param {*} gameTimer 
      */
-    function startTimer() {
-        lbStartTimer = true;
-        lbStartTimerSound = true;
+    function startTimer(gameTimer) {
+        gameTimer.lbTimerActive = true;
+        gameTimer.lbSoundActive = true;
     }
     /**
      * Quiz - Reset Timer and Sound effects
+     * @param {*} gameTimer 
      */
-    function resetTimer() {
+    function resetTimer(gameTimer) {
         resetSound('t1p-30');
-        lbStartTimer = false;
-        lbStartTimerSound = false;
-        liTimerRadiant = 360;
-        liTimerSeconds = ciGameTimer;
-        loTimerDiv.style.setProperty("--coGradientValue", 0 + "deg")
-        loTimerDiv.style.background = ` conic-gradient(#eda711 0deg ,#eda711 0deg ,white 0deg,white 360deg)`;
+        gameTimer.lbTimerActive = false;
+        gameTimer.lbSoundActive = false;
+        gameTimer.liRadiant = 360;
+        gameTimer.liTimeRemaining = ciGameTimer;
+        gameTimer.loObject.style.setProperty("--coGradientValue", 0 + "deg")
+        gameTimer.loObject.style.background = ` conic-gradient(#eda711 0deg ,#eda711 0deg ,white 0deg,white 360deg)`;
     }
     /**
      * Soundboard - Start playing
